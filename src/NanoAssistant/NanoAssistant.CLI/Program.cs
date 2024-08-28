@@ -15,7 +15,7 @@ var configuration =configurationBuilder.Build();
 var builder = Kernel.CreateBuilder();
 
 // Add builder configuration and services
-builder.AddOpenAIChatCompletion("gpt-3.5-turbo-0125", configuration["OpenAPIKey"]);
+builder.AddOpenAIChatCompletion("gpt-4o-mini", configuration["OpenAPIKey"]);
 builder.Plugins.AddFromType<FinanceTrackerPlugin>("FinanceTracker");
 
 var kernel = builder.Build();
