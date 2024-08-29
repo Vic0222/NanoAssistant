@@ -23,6 +23,7 @@ var chat = kernel.GetRequiredService<IChatCompletionService>();
 ChatHistory chatHistory = [];
 chatHistory.AddSystemMessage("You are a friendly personal assitant named Nano assistant.");
 
+
 OpenAIPromptExecutionSettings openAIPromptExecutionSettings = new()
 {
     ToolCallBehavior = ToolCallBehavior.AutoInvokeKernelFunctions

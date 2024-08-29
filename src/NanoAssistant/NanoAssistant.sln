@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.34928.147
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NanoAssistant.BlazorWebApp", "NanoAssistant.BlazorWebApp\NanoAssistant.BlazorWebApp.csproj", "{0E0D26CD-4E16-4018-9334-71EEE88D1A4A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NanoAssistant.CLI", "NanoAssistant.CLI\NanoAssistant.CLI.csproj", "{EAB7C0C1-6C34-41F6-AA57-9ACA181808B6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NanoAssistant.CLI", "NanoAssistant.CLI\NanoAssistant.CLI.csproj", "{EAB7C0C1-6C34-41F6-AA57-9ACA181808B6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NanoAssistant.Core", "NanoAssistant.Core\NanoAssistant.Core.csproj", "{6A323E8C-4D94-4AE1-A426-F044804576DF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NanoAssistant.Core", "NanoAssistant.Core\NanoAssistant.Core.csproj", "{6A323E8C-4D94-4AE1-A426-F044804576DF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NanoAssistant.BlazorWebApp", "NanoAssistant.BlazorWebApp\NanoAssistant.BlazorWebApp\NanoAssistant.BlazorWebApp.csproj", "{0AF9991D-E42D-4996-A070-429FC73B6E1D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NanoAssistant.BlazorWebApp.Client", "NanoAssistant.BlazorWebApp\NanoAssistant.BlazorWebApp.Client\NanoAssistant.BlazorWebApp.Client.csproj", "{7232A52C-97D0-4ABA-A092-A58572E7D0D4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,10 +17,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{0E0D26CD-4E16-4018-9334-71EEE88D1A4A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0E0D26CD-4E16-4018-9334-71EEE88D1A4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0E0D26CD-4E16-4018-9334-71EEE88D1A4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0E0D26CD-4E16-4018-9334-71EEE88D1A4A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EAB7C0C1-6C34-41F6-AA57-9ACA181808B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EAB7C0C1-6C34-41F6-AA57-9ACA181808B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EAB7C0C1-6C34-41F6-AA57-9ACA181808B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -27,6 +25,14 @@ Global
 		{6A323E8C-4D94-4AE1-A426-F044804576DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6A323E8C-4D94-4AE1-A426-F044804576DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6A323E8C-4D94-4AE1-A426-F044804576DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0AF9991D-E42D-4996-A070-429FC73B6E1D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0AF9991D-E42D-4996-A070-429FC73B6E1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0AF9991D-E42D-4996-A070-429FC73B6E1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0AF9991D-E42D-4996-A070-429FC73B6E1D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7232A52C-97D0-4ABA-A092-A58572E7D0D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7232A52C-97D0-4ABA-A092-A58572E7D0D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7232A52C-97D0-4ABA-A092-A58572E7D0D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7232A52C-97D0-4ABA-A092-A58572E7D0D4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>3c6fcc8f-1f36-4c9e-832f-33fa6b5c8a9e</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\NanoAssistant.Core\NanoAssistant.Core.csproj" />
+    <ProjectReference Include="..\NanoAssistant.BlazorWebApp.Client\NanoAssistant.BlazorWebApp.Client.csproj" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.5" />
+    <PackageReference Include="Microsoft.Orleans.Server" Version="8.2.0" />
+    <PackageReference Include="Microsoft.SemanticKernel" Version="1.17.2" />
+  </ItemGroup>
+
+</Project>
