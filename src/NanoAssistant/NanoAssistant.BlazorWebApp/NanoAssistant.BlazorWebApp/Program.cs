@@ -1,6 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.Connectors.OpenAI;
+using MudBlazor.Services;
 using NanoAssistant.BlazorWebApp.Client.Pages;
 using NanoAssistant.BlazorWebApp.Components;
 using NanoAssistant.Core.SemanticPlugins;
@@ -49,6 +50,9 @@ builder.Services.AddSingleton<PromptExecutionSettings>(new OpenAIPromptExecution
 {
     ToolCallBehavior = ToolCallBehavior.AutoInvokeKernelFunctions
 });
+
+// Add MudBlazor services
+builder.Services.AddMudServices();
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
