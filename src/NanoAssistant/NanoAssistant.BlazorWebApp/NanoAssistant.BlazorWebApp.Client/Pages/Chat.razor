@@ -1,6 +1,7 @@
 ﻿@page "/chat"
 @using NanoAssistant.Shared.Dtos
 
+@attribute [StreamRendering(true)]
 @rendermode @(new InteractiveWebAssemblyRenderMode(prerender: false));
 @inject HttpClient httpClient;
 @inherits OwningComponentBase
@@ -29,6 +30,25 @@
         <MudStack Class="pa-3" Row="true" Justify="Justify.FlexStart" width="70%">
             <MudPaper Class="pa-3 message-box bg-transparent">Item 1</MudPaper>
         </MudStack>
+        @foreach (var chat in ChatHistory.Chats)
+        {
+            if (chat.Role == "user")
+            {
+                <MudStack Class="pa-3" Row="true" Justify="Justify.FlexEnd">
+                    <MudPaper Class="pa-3 message-box bg-slate-100">
+                        @(chat.Message)
+                    </MudPaper>
+                </MudStack>
+            }
+            else if (chat.Role == "assistant")
+            {
+                <MudStack Class="pa-3" Row="true" Justify="Justify.FlexStart" width="70%">
+                    <MudPaper Class="pa-3 message-box bg-transparent">
+                        @(chat.Message)
+                    </MudPaper>
+                </MudStack>
+            }
+        }
 
    
     </div>
@@ -39,14 +59,25 @@
 </div>
 @code {
     public string Message { get; set; } = string.Empty;
+    public ChatHistoryDto ChatHistory { get; set; } = new ChatHistoryDto();
 
-    protected override Task OnInitializedAsync()
+    protected async override Task OnInitializedAsync()
     {
-        return base.OnInitializedAsync();
+        await GetChatHistory();
+        await base.OnInitializedAsync();
     }
 
     public async Task SendUserMessage()
     {
         await httpClient.PostAsJsonAsync("/api/chat", new UserMessageDto() { Message = Message });
+    }
+
+    public async Task GetChatHistory()
+    {
+        var response = await httpClient.GetFromJsonAsync<ChatHistoryDto>("/api/chat/history");
+        if (response != null)
+        {
+            ChatHistory = response;
+        }
     }
 }

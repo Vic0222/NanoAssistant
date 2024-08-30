@@ -18,6 +18,12 @@ namespace NanoAssistant.Core.Grains
             _promptExecutionSettings = promptExecutionSettings;
         }
 
+        public override Task OnActivateAsync(CancellationToken cancellationToken)
+        {
+            State.ChatHistory.AddSystemMessage("You are a personal assistant named Nano assistant.");
+            return base.OnActivateAsync(cancellationToken);
+        }
+
         public async Task<ChatDto> AddUserMessage(UserMessageDto userMessage)
         {
             State.ChatHistory.AddUserMessage(userMessage.Message);
@@ -35,7 +41,9 @@ namespace NanoAssistant.Core.Grains
         {
             return new ChatHistoryDto()
             {
-                Chats = State.ChatHistory.Select(chat => new ChatDto()
+                Chats = State.ChatHistory
+                .Where(chat => chat.Role == AuthorRole.Assistant || chat.Role == AuthorRole.User)
+                .Select(chat => new ChatDto()
                 {
                     Role = chat.Role.ToString(),
                     Message = chat.ToString(),
