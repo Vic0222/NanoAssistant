@@ -1,14 +1,7 @@
-﻿using Microsoft.Extensions.Options;
-using Microsoft.SemanticKernel;
+﻿using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.ChatCompletion;
-using Microsoft.SemanticKernel.Connectors.OpenAI;
-using NanoAssistant.Core.Dtos;
 using NanoAssistant.Core.GrainInterfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using NanoAssistant.Shared.Dtos;
 
 namespace NanoAssistant.Core.Grains
 {
@@ -25,12 +18,17 @@ namespace NanoAssistant.Core.Grains
             _promptExecutionSettings = promptExecutionSettings;
         }
 
-        public async Task<string> AddUserMessage(UserMessage userMessage)
+        public async Task<ChatDto> AddUserMessage(UserMessageDto userMessage)
         {
             State.ChatHistory.AddUserMessage(userMessage.Message);
             var result = await _chatCompletionService.GetChatMessageContentAsync(State.ChatHistory, _promptExecutionSettings, _kernel);
             State.ChatHistory.Add(result);
-            return result.ToString();
+            await WriteStateAsync();
+            return new ChatDto
+            {
+                Role = result.Role.ToString(),
+                Message = result.ToString(),
+            };
         }
 
         public async Task<ChatHistoryDto> GetChatHistoryAsync()

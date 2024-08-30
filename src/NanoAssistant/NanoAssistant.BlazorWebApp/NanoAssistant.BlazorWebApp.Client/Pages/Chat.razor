@@ -1,6 +1,9 @@
 ﻿@page "/chat"
+@using NanoAssistant.Shared.Dtos
 
+@rendermode @(new InteractiveWebAssemblyRenderMode(prerender: false));
 @inject HttpClient httpClient;
+@inherits OwningComponentBase
 
 <PageTitle>Chat</PageTitle>
 <div class="h-full w-full flex flex-col justify-end ">
@@ -30,13 +33,20 @@
    
     </div>
     <div class="bg-background  p-4 flex gap-2 w-full">
-        <MudTextField T="string"  Variant="Variant.Outlined" Text="" Placeholder="Message" AutoGrow MaxLines="5"  />
-        <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.ArrowUpward" DropShadow="false" />
+        <MudTextField T="string" Variant="Variant.Outlined" @bind-Text="Message" Placeholder="Message" AutoGrow MaxLines="5" />
+        <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.ArrowUpward" DropShadow="false" @onclick="SendUserMessage" />
      </div>
 </div>
 @code {
+    public string Message { get; set; } = string.Empty;
+
     protected override Task OnInitializedAsync()
     {
         return base.OnInitializedAsync();
+    }
+
+    public async Task SendUserMessage()
+    {
+        await httpClient.PostAsJsonAsync("/api/chat", new UserMessageDto() { Message = Message });
     }
 }

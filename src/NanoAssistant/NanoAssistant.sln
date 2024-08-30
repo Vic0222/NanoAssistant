@@ -7,9 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NanoAssistant.CLI", "NanoAs
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NanoAssistant.Core", "NanoAssistant.Core\NanoAssistant.Core.csproj", "{6A323E8C-4D94-4AE1-A426-F044804576DF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NanoAssistant.BlazorWebApp", "NanoAssistant.BlazorWebApp\NanoAssistant.BlazorWebApp\NanoAssistant.BlazorWebApp.csproj", "{0AF9991D-E42D-4996-A070-429FC73B6E1D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NanoAssistant.BlazorWebApp", "NanoAssistant.BlazorWebApp\NanoAssistant.BlazorWebApp\NanoAssistant.BlazorWebApp.csproj", "{0AF9991D-E42D-4996-A070-429FC73B6E1D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NanoAssistant.BlazorWebApp.Client", "NanoAssistant.BlazorWebApp\NanoAssistant.BlazorWebApp.Client\NanoAssistant.BlazorWebApp.Client.csproj", "{7232A52C-97D0-4ABA-A092-A58572E7D0D4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NanoAssistant.BlazorWebApp.Client", "NanoAssistant.BlazorWebApp\NanoAssistant.BlazorWebApp.Client\NanoAssistant.BlazorWebApp.Client.csproj", "{7232A52C-97D0-4ABA-A092-A58572E7D0D4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NanoAssistant.Shared", "NanoAssistant.Shared\NanoAssistant.Shared.csproj", "{AE05822F-2DFF-4B0E-A7A1-E0032B3F32FD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{7232A52C-97D0-4ABA-A092-A58572E7D0D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7232A52C-97D0-4ABA-A092-A58572E7D0D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7232A52C-97D0-4ABA-A092-A58572E7D0D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE05822F-2DFF-4B0E-A7A1-E0032B3F32FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE05822F-2DFF-4B0E-A7A1-E0032B3F32FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE05822F-2DFF-4B0E-A7A1-E0032B3F32FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE05822F-2DFF-4B0E-A7A1-E0032B3F32FD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

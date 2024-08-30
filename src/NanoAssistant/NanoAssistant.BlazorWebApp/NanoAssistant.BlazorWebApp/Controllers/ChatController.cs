@@ -1,7 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using NanoAssistant.Core.Dtos;
+﻿using Microsoft.AspNetCore.Mvc;
 using NanoAssistant.Core.GrainInterfaces;
+using NanoAssistant.Shared.Dtos;
 
 namespace NanoAssistant.BlazorWebApp.Controllers
 {
@@ -10,11 +9,11 @@ namespace NanoAssistant.BlazorWebApp.Controllers
     public class ChatController : ControllerBase
     {
         [HttpPost]
-        public async Task<IActionResult> Post([FromServices]IClusterClient clusterClient, [FromBody] UserMessage userMessage)
+        public async Task<IActionResult> Post([FromServices]IClusterClient clusterClient, [FromBody] UserMessageDto userMessage)
         {
             var assistant = clusterClient.GetGrain<INanoAssistantGrain>("user-1");
-            var response = assistant.AddUserMessage(userMessage);
-            return Ok(new { response = response.ToString() });
+            var chatDto = await assistant.AddUserMessage(userMessage);
+            return Ok(chatDto);
         }
 
         [HttpGet("history")]

@@ -12,6 +12,7 @@
     <ProjectReference Include="..\NanoAssistant.BlazorWebApp.Client\NanoAssistant.BlazorWebApp.Client.csproj" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.5" />
     <PackageReference Include="Microsoft.Orleans.Persistence.AdoNet" Version="8.2.0" />
+    <PackageReference Include="Microsoft.Orleans.Serialization.SystemTextJson" Version="8.2.0" />
     <PackageReference Include="Microsoft.Orleans.Server" Version="8.2.0" />
     <PackageReference Include="Microsoft.SemanticKernel" Version="1.17.2" />
     <PackageReference Include="MudBlazor" Version="7.6.0" />

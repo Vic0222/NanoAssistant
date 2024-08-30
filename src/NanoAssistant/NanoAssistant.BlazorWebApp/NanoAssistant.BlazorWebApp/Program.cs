@@ -1,11 +1,15 @@
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.Connectors.OpenAI;
 using MudBlazor.Services;
 using NanoAssistant.BlazorWebApp.Client.Pages;
 using NanoAssistant.BlazorWebApp.Components;
 using NanoAssistant.Core.SemanticPlugins;
+using NanoAssistant.Core.Serializers;
 using Orleans.Configuration;
+using Orleans.Hosting;
+using Orleans.Serialization;
 using System.Net;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,11 +23,13 @@ if (!isDevelopment)
 // Add orleans
 builder.Host.UseOrleans(siloBuilder =>
 {
-    siloBuilder.AddMemoryGrainStorageAsDefault();
-    siloBuilder.AddAdoNetGrainStorage("OrleansStorage", options =>
+
+    //siloBuilder.AddMemoryGrainStorageAsDefault();
+    siloBuilder.AddAdoNetGrainStorageAsDefault(options =>
     {
         options.Invariant = "Npgsql";
         options.ConnectionString = siloBuilder.Configuration.GetConnectionString("GrainStorage");
+        options.GrainStorageSerializer = new SystemTextJsonSerializer();
     });
     string? flyPrivateIP = siloBuilder.Configuration["FLY_PRIVATE_IP"];
     if (!string.IsNullOrEmpty(flyPrivateIP)) //this means we are running in fly.io
@@ -42,6 +48,12 @@ builder.Host.UseOrleans(siloBuilder =>
     {
         siloBuilder.UseLocalhostClustering();
     }
+
+    siloBuilder.Services.AddSerializer(serializerBuilder =>
+    {
+        serializerBuilder.AddJsonSerializer(isSupported: type => true);
+    });
+
 });
 
 
@@ -55,6 +67,8 @@ builder.Services.AddSingleton<PromptExecutionSettings>(new OpenAIPromptExecution
     ToolCallBehavior = ToolCallBehavior.AutoInvokeKernelFunctions
 });
 
+//builder.Services.AddHttpClient("default");
+//builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("default"));
 // Add MudBlazor services
 builder.Services.AddMudServices();
 
