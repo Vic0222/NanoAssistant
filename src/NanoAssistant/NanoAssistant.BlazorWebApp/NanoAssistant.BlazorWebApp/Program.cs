@@ -20,7 +20,11 @@ if (!isDevelopment)
 builder.Host.UseOrleans(siloBuilder =>
 {
     siloBuilder.AddMemoryGrainStorageAsDefault();
-
+    siloBuilder.AddAdoNetGrainStorage("OrleansStorage", options =>
+    {
+        options.Invariant = "Npgsql";
+        options.ConnectionString = siloBuilder.Configuration.GetConnectionString("GrainStorage");
+    });
     string? flyPrivateIP = siloBuilder.Configuration["FLY_PRIVATE_IP"];
     if (!string.IsNullOrEmpty(flyPrivateIP)) //this means we are running in fly.io
     {

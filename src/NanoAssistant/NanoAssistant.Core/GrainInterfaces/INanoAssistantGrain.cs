@@ -10,5 +10,6 @@ namespace NanoAssistant.Core.GrainInterfaces
     public interface INanoAssistantGrain : IGrainWithStringKey
     {
         Task<string> AddUserMessage(UserMessage userMessage);
+        Task<ChatHistoryDto> GetChatHistoryAsync();
     }
 }

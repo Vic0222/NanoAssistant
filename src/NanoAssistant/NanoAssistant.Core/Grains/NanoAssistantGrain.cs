@@ -32,6 +32,18 @@ namespace NanoAssistant.Core.Grains
             State.ChatHistory.Add(result);
             return result.ToString();
         }
+
+        public async Task<ChatHistoryDto> GetChatHistoryAsync()
+        {
+            return new ChatHistoryDto()
+            {
+                Chats = State.ChatHistory.Select(chat => new ChatDto()
+                {
+                    Role = chat.Role.ToString(),
+                    Message = chat.ToString(),
+                }).ToList()
+            };
+        }
     }
 
     public class NanoAssistantState

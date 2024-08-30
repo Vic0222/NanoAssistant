@@ -7,7 +7,7 @@ namespace NanoAssistant.BlazorWebApp.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AssistantController : ControllerBase
+    public class ChatController : ControllerBase
     {
         [HttpPost]
         public async Task<IActionResult> Post([FromServices]IClusterClient clusterClient, [FromBody] UserMessage userMessage)
@@ -17,12 +17,12 @@ namespace NanoAssistant.BlazorWebApp.Controllers
             return Ok(new { response = response.ToString() });
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Get([FromServices] IClusterClient clusterClient, [FromQuery] string message)
+        [HttpGet("history")]
+        public async Task<IActionResult> Get([FromServices] IClusterClient clusterClient)
         {
             var assistant = clusterClient.GetGrain<INanoAssistantGrain>("user-1");
-            var response = await assistant.AddUserMessage(new UserMessage() { Message = message });
-            return Ok(new { response = response.ToString() });
+            var chatHistory = await assistant.GetChatHistoryAsync();
+            return Ok(chatHistory);
         }
     }
 }
