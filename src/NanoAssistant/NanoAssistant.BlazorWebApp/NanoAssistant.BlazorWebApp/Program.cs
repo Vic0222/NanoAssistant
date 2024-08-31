@@ -23,8 +23,6 @@ if (!isDevelopment)
 // Add orleans
 builder.Host.UseOrleans(siloBuilder =>
 {
-
-    //siloBuilder.AddMemoryGrainStorageAsDefault();
     siloBuilder.AddAdoNetGrainStorageAsDefault(options =>
     {
         options.Invariant = "Npgsql";

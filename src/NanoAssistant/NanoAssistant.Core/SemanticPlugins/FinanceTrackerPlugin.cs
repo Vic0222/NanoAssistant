@@ -15,7 +15,7 @@ namespace NanoAssistant.Core.SemanticPlugins
         private static int _totalIncome = 0;
 
         [KernelFunction("get_balance")]
-        [Description("Get the total balance in cents.")]
+        [Description("Get the balance in cents.")]
         public async Task<int> GetBalance()
         {
             return _balance;

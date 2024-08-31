@@ -49,7 +49,7 @@
                 </MudStack>
             }
         }
-
+        
    
     </div>
     <div class="bg-background  p-4 flex gap-2 w-full">
@@ -59,6 +59,7 @@
 </div>
 @code {
     public string Message { get; set; } = string.Empty;
+    public Guid IdempotencyKey { get; set; } = Guid.NewGuid();
     public ChatHistoryDto ChatHistory { get; set; } = new ChatHistoryDto();
 
     protected async override Task OnInitializedAsync()
@@ -69,7 +70,26 @@
 
     public async Task SendUserMessage()
     {
-        await httpClient.PostAsJsonAsync("/api/chat", new UserMessageDto() { Message = Message });
+        ChatHistory.Chats.Add(new ChatDto()
+            {
+                Role = "user",
+                Message = Message
+            });
+        var userMessage = new UserMessageDto() { IdempotencyKey = IdempotencyKey.ToString(), Message = Message };
+        Message = string.Empty;
+
+        StateHasChanged();
+
+        
+        var response = await httpClient.PostAsJsonAsync("/api/chat", userMessage);
+        response.EnsureSuccessStatusCode();
+        var chat = await response.Content.ReadFromJsonAsync<ChatDto>();
+        if (chat != null)
+        {
+            ChatHistory.Chats.Add(chat);
+        }
+        IdempotencyKey = Guid.NewGuid();
+
     }
 
     public async Task GetChatHistory()
