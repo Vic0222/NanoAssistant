@@ -1,11 +1,23 @@
+using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MudBlazor.Services;
+using NanoAssistant.BlazorWebApp.Client.IdentityComponents;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
 
-builder.Services.AddHttpClient("default",client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress));
+
+
+builder.Services.AddAuthorizationCore();
+builder.Services.AddCascadingAuthenticationState();
+builder.Services.AddSingleton<AuthenticationStateProvider, PersistentAuthenticationStateProvider>();
+
+
+builder.Services.AddHttpClient("default", client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress));
 builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("default"));
+
+
 builder.Services.AddMudServices();
 
 await builder.Build().RunAsync();

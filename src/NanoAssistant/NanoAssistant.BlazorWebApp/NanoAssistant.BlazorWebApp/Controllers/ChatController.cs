@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using NanoAssistant.Core.GrainInterfaces;
 using NanoAssistant.Shared.Dtos;
+using System.Security.Claims;
 
 namespace NanoAssistant.BlazorWebApp.Controllers
 {
@@ -16,10 +18,11 @@ namespace NanoAssistant.BlazorWebApp.Controllers
             return Ok(chatDto);
         }
 
+        [Authorize()]
         [HttpGet("history")]
         public async Task<IActionResult> Get([FromServices] IClusterClient clusterClient)
         {
-            var assistant = clusterClient.GetGrain<INanoAssistantGrain>("user-1");
+            var assistant = clusterClient.GetGrain<INanoAssistantGrain>(ClaimTypes.NameIdentifier);
             var chatHistory = await assistant.GetChatHistoryAsync();
             return Ok(chatHistory);
         }
