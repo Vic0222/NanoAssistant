@@ -2,6 +2,7 @@ using Auth0.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,6 +16,7 @@ using NanoAssistant.BlazorWebApp.Components;
 using NanoAssistant.BlazorWebApp.IdentityComponents;
 using NanoAssistant.Core.SemanticPlugins;
 using NanoAssistant.Core.Serializers;
+using NanoAssistant.Core.Services;
 using Orleans.Configuration;
 using Orleans.Hosting;
 using Orleans.Serialization;
@@ -66,7 +68,7 @@ builder.Host.UseOrleans(siloBuilder =>
 var kernelBuilder = builder.Services.AddKernel();
 
 kernelBuilder.AddOpenAIChatCompletion(builder.Configuration["OpenAI:Model"], builder.Configuration["OpenAI:ApiKey"]);
-kernelBuilder.Plugins.AddFromType<FinanceTrackerPlugin>("FinanceTracker");
+//kernelBuilder.Plugins.AddFromType<FinanceTrackerPlugin>();
 
 builder.Services.AddSingleton<PromptExecutionSettings>(new OpenAIPromptExecutionSettings()
 {
@@ -75,16 +77,19 @@ builder.Services.AddSingleton<PromptExecutionSettings>(new OpenAIPromptExecution
 
 //builder.Services.AddHttpClient("default");
 //builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("default"));
+builder.Services.AddSingleton<INanoFinanceTrackerService, NanoFinanceTrackerService>();
+builder.Services.AddTransient<FinanceTrackerPlugin>();
 
 builder.Services.AddAuth0WebAppAuthentication(options =>
 {
     options.Domain = builder.Configuration["Auth0:Domain"]!;
     options.ClientId = builder.Configuration["Auth0:ClientId"]!;
-
-
+    options.ClientSecret = builder.Configuration["Auth0:ClientSecret"]!;
+}).WithAccessToken(options =>
+{
 });
 
-
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddAuthorization();
 
 builder.Services.AddCascadingAuthenticationState();

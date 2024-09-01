@@ -3,6 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using NanoAssistant.Core.GrainInterfaces;
 using NanoAssistant.Shared.Dtos;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Http;
+
 
 namespace NanoAssistant.BlazorWebApp.Controllers
 {
@@ -11,18 +14,27 @@ namespace NanoAssistant.BlazorWebApp.Controllers
     public class ChatController : ControllerBase
     {
         [HttpPost]
-        public async Task<IActionResult> Post([FromServices]IClusterClient clusterClient, [FromBody] UserMessageDto userMessage)
+        [Authorize]
+        public async Task<IActionResult> Post([FromServices] IHttpContextAccessor httpContextAccessor, [FromServices]IClusterClient clusterClient, [FromBody] UserMessageDto userMessage)
         {
+
+            string? token = await httpContextAccessor?.HttpContext?.GetTokenAsync("access_token");
+            if (string.IsNullOrWhiteSpace(token))
+            {
+                return Unauthorized();
+            }
             var assistant = clusterClient.GetGrain<INanoAssistantGrain>("user-1");
-            var chatDto = await assistant.AddUserMessage(userMessage);
+            
+            var chatDto = await assistant.AddUserMessage(userMessage, token);
             return Ok(chatDto);
         }
 
         [Authorize()]
         [HttpGet("history")]
-        public async Task<IActionResult> Get([FromServices] IClusterClient clusterClient)
+        public async Task<IActionResult> Get([FromServices] IClusterClient clusterClient, [FromQuery]string userId = "user-1")
         {
-            var assistant = clusterClient.GetGrain<INanoAssistantGrain>(ClaimTypes.NameIdentifier);
+            
+            var assistant = clusterClient.GetGrain<INanoAssistantGrain>(userId);
             var chatHistory = await assistant.GetChatHistoryAsync();
             return Ok(chatHistory);
         }

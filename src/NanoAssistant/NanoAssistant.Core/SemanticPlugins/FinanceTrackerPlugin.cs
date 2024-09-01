@@ -1,4 +1,5 @@
 ﻿using Microsoft.SemanticKernel;
+using NanoAssistant.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,6 +14,18 @@ namespace NanoAssistant.Core.SemanticPlugins
         private static int _balance = 0;
         private static int _totalExpense = 0;
         private static int _totalIncome = 0;
+        private readonly INanoFinanceTrackerService _nanoFinanceTrackerService;
+        private string _accessToken = string.Empty;
+
+        public FinanceTrackerPlugin(INanoFinanceTrackerService nanoFinanceTrackerService)
+        {
+            _nanoFinanceTrackerService = nanoFinanceTrackerService;
+        }
+
+        public void SetAccessToken(string accessToken)
+        {
+            _accessToken = accessToken;
+        }
 
         [KernelFunction("get_balance")]
         [Description("Get the balance in cents.")]
@@ -39,4 +52,5 @@ namespace NanoAssistant.Core.SemanticPlugins
             return _totalIncome;
         }
     }
+
 }
