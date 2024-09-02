@@ -23,17 +23,32 @@ namespace NanoAssistant.BlazorWebApp.Controllers
             {
                 return Unauthorized();
             }
-            var assistant = clusterClient.GetGrain<INanoAssistantGrain>("user-1");
-            
+            string? userId = GetUserId();
+            if (string.IsNullOrWhiteSpace(userId))
+            {
+                return Unauthorized();
+            }
+            var assistant = clusterClient.GetGrain<INanoAssistantGrain>(userId);
+
             var chatDto = await assistant.AddUserMessage(userMessage, token);
             return Ok(chatDto);
         }
 
+        private string? GetUserId()
+        {
+            return User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+        }
+
         [Authorize()]
         [HttpGet("history")]
-        public async Task<IActionResult> Get([FromServices] IClusterClient clusterClient, [FromQuery]string userId = "user-1")
+        public async Task<IActionResult> Get([FromServices] IClusterClient clusterClient)
         {
-            
+
+            string? userId = GetUserId();
+            if (string.IsNullOrWhiteSpace(userId))
+            {
+                return Unauthorized();
+            }
             var assistant = clusterClient.GetGrain<INanoAssistantGrain>(userId);
             var chatHistory = await assistant.GetChatHistoryAsync();
             return Ok(chatHistory);
