@@ -75,9 +75,10 @@ builder.Services.AddSingleton<PromptExecutionSettings>(new OpenAIPromptExecution
     ToolCallBehavior = ToolCallBehavior.AutoInvokeKernelFunctions
 });
 
-//builder.Services.AddHttpClient("default");
-//builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("default"));
-builder.Services.AddSingleton<INanoFinanceTrackerService, NanoFinanceTrackerService>();
+builder.Services.AddHttpClient<INanoFinanceTrackerService, NanoFinanceTrackerService>(client => {
+    client.BaseAddress = new Uri(builder.Configuration["FinanceTracker:BaseUrl"]!);
+});
+
 builder.Services.AddTransient<FinanceTrackerPlugin>();
 
 builder.Services.AddAuth0WebAppAuthentication(options =>
@@ -87,6 +88,7 @@ builder.Services.AddAuth0WebAppAuthentication(options =>
     options.ClientSecret = builder.Configuration["Auth0:ClientSecret"]!;
 }).WithAccessToken(options =>
 {
+    options.Audience = "nano-finance-tracker";
 });
 
 builder.Services.AddHttpContextAccessor();

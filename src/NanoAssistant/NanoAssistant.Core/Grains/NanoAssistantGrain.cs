@@ -36,8 +36,10 @@ namespace NanoAssistant.Core.Grains
         private void AddSystemMessages()
         {
             State.ChatHistory.AddSystemMessage("You are a personal assistant named Nano assistant.");
+            State.ChatHistory.AddSystemMessage($"Today is {DateTimeOffset.Now.ToString("d")}.");
             State.ChatHistory.AddSystemMessage("Use dollars when dealing with money.");
-            State.ChatHistory.AddSystemMessage("When adding expense or income get the balance.");
+            State.ChatHistory.AddSystemMessage("When adding expense or income get the financial summary for that date.");
+            State.ChatHistory.AddSystemMessage("When asking for balance return the financial summary.");
         }
 
         public async Task<ChatDto> AddUserMessage(UserMessageDto userMessage, string accessToken)
@@ -56,7 +58,7 @@ namespace NanoAssistant.Core.Grains
             _financeTrackerPlugin.SetAccessToken(accessToken);
 
             //change chat history to last 20.
-            State.ChatHistory = new ChatHistory(State.ChatHistory.Skip(Math.Max(0, State.ChatHistory.Count - 90)));
+            State.ChatHistory = new ChatHistory(State.ChatHistory.Skip(Math.Max(0, State.ChatHistory.Count - 100)));
             AddSystemMessages();
             State.ChatHistory.AddUserMessage(userMessage.Message);
             var result = await _chatCompletionService.GetChatMessageContentAsync(State.ChatHistory, _promptExecutionSettings, _kernel);
