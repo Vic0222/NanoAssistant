@@ -58,7 +58,8 @@ namespace NanoAssistant.Core.Grains
             _financeTrackerPlugin.SetAccessToken(accessToken);
 
             //change chat history to last 20.
-            State.ChatHistory = new ChatHistory(State.ChatHistory.Skip(Math.Max(0, State.ChatHistory.Count - 100)));
+            var newChatHistory = State.ChatHistory.Skip(Math.Max(0, State.ChatHistory.Count - 100)).SkipWhile(chat => chat.Role == AuthorRole.Tool);
+            State.ChatHistory = new ChatHistory(newChatHistory);
             AddSystemMessages();
             State.ChatHistory.AddUserMessage(userMessage.Message);
             var result = await _chatCompletionService.GetChatMessageContentAsync(State.ChatHistory, _promptExecutionSettings, _kernel);
