@@ -30,7 +30,7 @@ namespace NanoAssistant.Core.SemanticPlugins
         }
 
         [KernelFunction("get_finance_summary")]
-        [Description("Get's the financial summary of the month for the date.")]
+        [Description("Get's the financial summary of the month for the date in cents.")]
         [return:Description("Financial summary of the month. Like balance, total incomes and total expenses.")]
         public Task<FinanceMonthDto> GetFinancialSummary(DateTimeOffset balanceDate)
         {
@@ -38,16 +38,16 @@ namespace NanoAssistant.Core.SemanticPlugins
         }
 
         [KernelFunction("add_expense")]
-        [Description("Add the expense in cents to balance and returns the total expense in cents.")]
-        [return: Description("Status of the finance month. Like balance, total incomes and total expenses.")]
+        [Description("Add the expense in cents.")]
+        [return: Description("Status of the finance month in cents.")]
         public Task<FinanceMonthDto> AddExpense(DateTimeOffset transactionDate, int expense, string category, string description)
         {
             return _nanoFinanceTrackerService.AddExpense(transactionDate, expense, category, description, _accessToken); ;
         }
 
         [KernelFunction("add_income")]
-        [Description("Add the income in cents to balance and returns the total income in cents.")]
-        [return: Description("Status of the finance month. Like balance, total incomes and total expenses.")]
+        [Description("Add the income in cents.")]
+        [return: Description("Status of the finance month in cents.")]
         public Task<FinanceMonthDto> AddIncome(DateTimeOffset transactionDate, int income, string category, string description)
         {
             return _nanoFinanceTrackerService.AddIncome(transactionDate, income, category, description, _accessToken); ;
