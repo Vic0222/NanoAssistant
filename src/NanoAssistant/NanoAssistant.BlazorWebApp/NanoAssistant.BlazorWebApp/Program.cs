@@ -54,7 +54,13 @@ builder.Host.UseOrleans(siloBuilder =>
     }
     else
     {
-        siloBuilder.UseLocalhostClustering();
+        // Use ADO.NET for clustering
+        Console.WriteLine("Using npsql");
+        siloBuilder.UseAdoNetClustering(options =>
+        {
+            options.Invariant = "Npgsql";
+            options.ConnectionString = siloBuilder.Configuration.GetConnectionString("Clustering");
+        });
     }
 
     siloBuilder.Services.AddSerializer(serializerBuilder =>
