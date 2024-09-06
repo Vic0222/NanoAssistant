@@ -94,6 +94,8 @@ builder.Services.AddAuth0WebAppAuthentication(options =>
     options.ClientSecret = builder.Configuration["Auth0:ClientSecret"]!;
 }).WithAccessToken(options =>
 {
+    //required to not have an empty access token
+    options.Audience = "nano-assistant";
 });
 
 builder.Services.AddHttpContextAccessor();
