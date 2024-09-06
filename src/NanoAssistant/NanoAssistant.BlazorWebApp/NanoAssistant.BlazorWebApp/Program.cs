@@ -94,7 +94,6 @@ builder.Services.AddAuth0WebAppAuthentication(options =>
     options.ClientSecret = builder.Configuration["Auth0:ClientSecret"]!;
 }).WithAccessToken(options =>
 {
-    options.Audience = "nano-finance-tracker";
 });
 
 builder.Services.AddHttpContextAccessor();
