@@ -9,7 +9,7 @@
 
 <PageTitle>Chat</PageTitle>
 <div class="h-full w-full flex flex-col justify-end ">
-    <div class="h-full overflow-scroll flex flex-col justify-end ">
+    <div class="h-full justify-end overflow-y-auto">
         @foreach (var chat in ChatHistory.Chats)
         {
             if (chat.Role == "user")
