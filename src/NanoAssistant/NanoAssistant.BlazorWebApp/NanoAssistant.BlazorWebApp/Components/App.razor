@@ -10,6 +10,14 @@
     <link href="/css/app.min.css" rel="stylesheet" />
     <link rel="icon" type="image/ico" href="favicon.ico" />
     <HeadOutlet />
+    <script>
+        window.scrollToBottom = (elementId) => {
+            var element = document.getElementById(elementId);
+            if (element) {
+                element.scrollTop = element.scrollHeight;
+            }
+        };
+    </script>
 </head>
 
 <body>
