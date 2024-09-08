@@ -8,34 +8,43 @@
 @inherits OwningComponentBase
 
 <PageTitle>Chat</PageTitle>
-<div class="h-full w-full flex flex-col justify-end ">
-    <div class="h-full justify-end overflow-y-auto">
-        @foreach (var chat in ChatHistory.Chats)
-        {
-            if (chat.Role == "user")
-            {
-                <MudStack Class="pa-3" Row="true" Justify="Justify.FlexEnd">
-                    <MudPaper Class="pa-3 message-box bg-slate-100">
-                        @(chat.Message)
-                    </MudPaper>
-                </MudStack>
-            }
-            else if (chat.Role == "assistant")
-            {
-                <MudStack Class="pa-3" Row="true" Justify="Justify.FlexStart" width="70%">
-                    <MudPaper Class="pa-3 message-box bg-transparent">
-                        @(chat.Message)
-                    </MudPaper>
-                </MudStack>
-            }
-        }
-        
-   
+<div class="flex h-full flex-col">
+    <div class="flex-1 overflow-hidden">
+        <div class="h-full">
+
+            <div class="h-full w-full flex flex-col justify-end ">
+                <div class="h-full justify-end overflow-y-auto">
+                    @foreach (var chat in ChatHistory.Chats)
+                    {
+                        if (chat.Role == "user")
+                        {
+                            <MudStack Class="pa-3" Row="true" Justify="Justify.FlexEnd">
+                                <MudPaper Class="pa-3 message-box bg-slate-100">
+                                    @(chat.Message)
+                                </MudPaper>
+                            </MudStack>
+                        }
+                        else if (chat.Role == "assistant")
+                        {
+                            <MudStack Class="pa-3" Row="true" Justify="Justify.FlexStart" width="70%">
+                                <MudPaper Class="pa-3 message-box bg-transparent">
+                                    @(chat.Message)
+                                </MudPaper>
+                            </MudStack>
+                        }
+                    }
+
+
+                </div>
+
+            </div>
+
+        </div>
     </div>
     <div class="bg-background  p-4 flex gap-2 w-full">
         <MudTextField T="string" Variant="Variant.Outlined" @bind-Text="Message" Placeholder="Message" AutoGrow MaxLines="5" OnKeyDown="OnKeyDown" DebounceInterval="500" />
         <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.ArrowUpward" DropShadow="false" @onclick="SendUserMessage" Disabled="string.IsNullOrWhiteSpace(Message)" />
-     </div>
+    </div>
 </div>
 @code {
     public string Message { get; set; } = string.Empty;
@@ -72,7 +81,7 @@
 
         StateHasChanged();
 
-        
+
         var response = await httpClient.PostAsJsonAsync("/api/chat", userMessage);
         response.EnsureSuccessStatusCode();
         var chat = await response.Content.ReadFromJsonAsync<ChatDto>();

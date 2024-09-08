@@ -578,16 +578,16 @@ video {
   height: 100%;
 }
 
-.h-screen {
-  height: 100vh;
-}
-
-.min-h-screen {
-  min-height: 100vh;
+.min-h-full {
+  min-height: 100%;
 }
 
 .w-full {
   width: 100%;
+}
+
+.flex-1 {
+  flex: 1 1 0%;
 }
 
 .flex-col {
@@ -602,12 +602,12 @@ video {
   gap: 0.5rem;
 }
 
-.overflow-scroll {
-  overflow: scroll;
+.overflow-hidden {
+  overflow: hidden;
 }
 
-.border-t {
-  border-top-width: 1px;
+.overflow-y-auto {
+  overflow-y: auto;
 }
 
 .bg-slate-100 {
@@ -633,10 +633,10 @@ video {
   width: 100%;
 }
 
-/*html{
-    min-height: 100%;
+html{
+  height: 100%;
 }
 
 body {
-    min-height: 100%;
-}*/
+  height: 100%;
+}
