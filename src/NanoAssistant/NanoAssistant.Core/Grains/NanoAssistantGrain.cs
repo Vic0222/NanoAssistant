@@ -38,8 +38,7 @@ namespace NanoAssistant.Core.Grains
             State.ChatHistory.AddSystemMessage("You are a personal assistant named Nano assistant.");
             State.ChatHistory.AddSystemMessage($"Today is {DateTimeOffset.Now.ToString("d")}.");
             State.ChatHistory.AddSystemMessage("Use dollars when dealing with money.");
-            State.ChatHistory.AddSystemMessage("When asking for balance return the financial summary.");
-            State.ChatHistory.AddSystemMessage("Please response in markdown.");
+            State.ChatHistory.AddSystemMessage("When asking for balance return the financial summary in markdown.");
         }
 
         public async Task<ChatDto> AddUserMessage(UserMessageDto userMessage, string accessToken)
