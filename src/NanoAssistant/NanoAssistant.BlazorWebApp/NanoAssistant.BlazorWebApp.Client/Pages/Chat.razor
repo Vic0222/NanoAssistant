@@ -17,7 +17,7 @@
             {
                 <MudStack Class="pa-3" Row="true" Justify="Justify.FlexEnd">
                     <MudPaper Class="pa-3 message-box bg-slate-100">
-                        @(chat.Message)
+                        @((MarkupString)Markdown.ToHtml(chat.Message))
                     </MudPaper>
                 </MudStack>
             }
@@ -25,7 +25,7 @@
             {
                 <MudStack Class="pa-3" Row="true" Justify="Justify.FlexStart" width="70%">
                     <MudPaper Class="pa-3 message-box bg-transparent">
-                        @(chat.Message)
+                        @((MarkupString)Markdown.ToHtml(chat.Message))
                     </MudPaper>
                 </MudStack>
             }
