@@ -13,9 +13,9 @@ namespace NanoAssistant.Core.Services
 {
     public interface INanoFinanceTrackerService
     {
-        Task<FinanceMonthDto> AddExpense(DateTimeOffset transactionDate, int expense, string category, string description, string accessToken);
-        Task<FinanceMonthDto> AddIncome(DateTimeOffset transactionDate, int income, string category, string description, string accessToken);
-        Task<FinanceMonthDto> GetFinanceMonthStatus(DateTimeOffset dateTime, string accessToken);
+        Task<FinanceMonthDto> AddExpense(string account, DateTimeOffset transactionDate, int expense, string category, string description, string accessToken);
+        Task<FinanceMonthDto> AddIncome(string account, DateTimeOffset transactionDate, int income, string category, string description, string accessToken);
+        Task<FinanceMonthDto> GetFinanceMonthStatus(string account, DateTimeOffset dateTime, string accessToken);
     }
 
     public class NanoFinanceTrackerService : INanoFinanceTrackerService
@@ -29,12 +29,12 @@ namespace NanoAssistant.Core.Services
             _logger = logger;
         }
 
-        public async Task<FinanceMonthDto> AddIncome(DateTimeOffset transactionDate, int income, string category, string description, string accessToken)
+        public async Task<FinanceMonthDto> AddIncome(string account, DateTimeOffset transactionDate, int income, string category, string description, string accessToken)
         {
             try
             {
                 _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-                var response = await _httpClient.PostAsJsonAsync($"api/FinanceMonth/{transactionDate.Year}/{transactionDate.Month}/incomes", new AddIncomeCommandDto()
+                var response = await _httpClient.PostAsJsonAsync($"api/FinanceMonth/{account}/{transactionDate.Year}/{transactionDate.Month}/incomes", new AddIncomeCommandDto()
                 {
                     Amount = income,
                     Category = category,
@@ -51,12 +51,12 @@ namespace NanoAssistant.Core.Services
             }
         }
 
-        public async Task<FinanceMonthDto> AddExpense(DateTimeOffset transactionDate, int expense, string category, string description, string accessToken)
+        public async Task<FinanceMonthDto> AddExpense(string account, DateTimeOffset transactionDate, int expense, string category, string description, string accessToken)
         {
             try
             {
                 _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-                var response = await _httpClient.PostAsJsonAsync($"api/FinanceMonth/{transactionDate.Year}/{transactionDate.Month}/expenses", new AddExpenseCommandDto()
+                var response = await _httpClient.PostAsJsonAsync($"api/FinanceMonth/{account}/{transactionDate.Year}/{transactionDate.Month}/expenses", new AddExpenseCommandDto()
                 {
                     Amount = expense,
                     Category = category,
@@ -73,12 +73,12 @@ namespace NanoAssistant.Core.Services
             }
         }
 
-        public async Task<FinanceMonthDto> GetFinanceMonthStatus(DateTimeOffset dateTime,string accessToken)
+        public async Task<FinanceMonthDto> GetFinanceMonthStatus(string account, DateTimeOffset dateTime,string accessToken)
         {
             try
             {
                 _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-                var response = await _httpClient.GetAsync($"api/FinanceMonth/{dateTime.Year}/{dateTime.Month}");
+                var response = await _httpClient.GetAsync($"api/FinanceMonth/{account}/{dateTime.Year}/{dateTime.Month}");
                 response.EnsureSuccessStatusCode();
                 return await response.Content.ReadFromJsonAsync<FinanceMonthDto>() ?? new FinanceMonthDto();
             }
