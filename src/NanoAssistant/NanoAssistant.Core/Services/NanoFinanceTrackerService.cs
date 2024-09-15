@@ -15,6 +15,7 @@ namespace NanoAssistant.Core.Services
     {
         Task<FinanceMonthDto> AddExpense(string account, DateTimeOffset transactionDate, int expense, string category, string description, string accessToken);
         Task<FinanceMonthDto> AddIncome(string account, DateTimeOffset transactionDate, int income, string category, string description, string accessToken);
+        Task<List<FinancialTransactionDto>> GetBreakdown(string account, DateTimeOffset date, string accessToken);
         Task<FinanceMonthDto> GetFinanceMonthStatus(string account, DateTimeOffset dateTime, string accessToken);
     }
 
@@ -73,7 +74,7 @@ namespace NanoAssistant.Core.Services
             }
         }
 
-        public async Task<FinanceMonthDto> GetFinanceMonthStatus(string account, DateTimeOffset dateTime,string accessToken)
+        public async Task<FinanceMonthDto> GetFinanceMonthStatus(string account, DateTimeOffset dateTime, string accessToken)
         {
             try
             {
@@ -88,6 +89,22 @@ namespace NanoAssistant.Core.Services
                 throw;
             }
             
+        }
+
+        public async Task<List<FinancialTransactionDto>> GetBreakdown(string account, DateTimeOffset date, string accessToken)
+        {
+            try
+            {
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+                var response = await _httpClient.GetAsync($"api/FinanceMonth/{account}/{date.Year}/{date.Month}/transactions");
+                response.EnsureSuccessStatusCode();
+                return await response.Content.ReadFromJsonAsync<List<FinancialTransactionDto>>() ?? new List<FinancialTransactionDto>();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error getting finance month , {DateTime}", date);
+                throw;
+            }
         }
     }
 }

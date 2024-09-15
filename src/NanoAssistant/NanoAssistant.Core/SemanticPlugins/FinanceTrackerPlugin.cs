@@ -37,6 +37,14 @@ namespace NanoAssistant.Core.SemanticPlugins
             return _nanoFinanceTrackerService.GetFinanceMonthStatus(account, balanceDate, _accessToken);
         }
 
+        [KernelFunction("get_finance_breakdown")]
+        [Description("Get's the financial breakdown of the month for the date in cents.")]
+        [return: Description("Financial breakdown of the month. In cents.")]
+        public Task<List<FinancialTransactionDto>> GetBreakdown([Description("Required")] string account, DateTimeOffset date)
+        {
+            return _nanoFinanceTrackerService.GetBreakdown(account, date, _accessToken);
+        }
+
         [KernelFunction("add_expense")]
         [Description("Add the expense in cents.")]
         [return: Description("Financial summary in cents.")]
