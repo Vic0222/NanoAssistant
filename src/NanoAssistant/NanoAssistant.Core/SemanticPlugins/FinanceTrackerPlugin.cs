@@ -31,7 +31,7 @@ namespace NanoAssistant.Core.SemanticPlugins
 
         [KernelFunction("get_finance_summary")]
         [Description("Get's the financial summary of the month for the date in cents.")]
-        [return:Description("Financial summary of the month. Like balance, total incomes and total expenses in cents.")]
+        [return:Description("Financial summary of the month in cents.")]
         public Task<FinanceMonthDto> GetFinancialSummary([Description("Required")] string account, DateTimeOffset balanceDate)
         {
             return _nanoFinanceTrackerService.GetFinanceMonthStatus(account, balanceDate, _accessToken);
