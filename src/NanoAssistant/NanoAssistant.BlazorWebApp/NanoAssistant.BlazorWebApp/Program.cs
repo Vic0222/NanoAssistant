@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
@@ -20,6 +21,7 @@ using NanoAssistant.Core.Services;
 using Orleans.Configuration;
 using Orleans.Hosting;
 using Orleans.Serialization;
+using StackExchange.Redis;
 using System.Net;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -106,6 +108,17 @@ builder.Services.AddScoped<AuthenticationStateProvider, PersistingServerAuthenti
 
 // Add MudBlazor services
 builder.Services.AddMudServices();
+
+
+
+if (!isDevelopment)
+{
+    var redis = ConnectionMultiplexer.Connect(builder.Configuration.GetConnectionString("Redis")!);
+    builder.Services.AddDataProtection()
+        .SetApplicationName("NanoAssistant")
+        .SetDefaultKeyLifetime(TimeSpan.FromDays(30))
+        .PersistKeysToStackExchangeRedis(redis);
+}
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
