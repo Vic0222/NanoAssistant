@@ -1,4 +1,7 @@
 ﻿@page "/chat"
+@using System.Text.Json.Nodes
+@using NanoAssistant.BlazorWebApp.Client.MessageParsers
+@using NanoAssistant.BlazorWebApp.Client.Models
 
 @attribute [Authorize];
 
@@ -7,6 +10,7 @@
 @inject HttpClient httpClient;
 @inherits OwningComponentBase;
 @inject IJSRuntime JS;
+@inject IEnumerable<IMessageParser> messageParsers;
 
 <PageTitle>Chat</PageTitle>
 <div class="h-full w-full flex flex-col justify-end ">
@@ -23,11 +27,31 @@
             }
             else if (chat.Role == "assistant")
             {
-                <MudStack Class="pa-3" Row="true" Justify="Justify.FlexStart" width="70%">
-                    <MudPaper Class="pa-3 message-box bg-transparent">
-                        @((MarkupString)Markdown.ToHtml(chat.Message))
-                    </MudPaper>
-                </MudStack>
+                if (chat.ParsedMessage == null)
+                {
+                    <MudStack Class="pa-3" Row="true" Justify="Justify.FlexStart" width="70%">
+                        <MudPaper Class="pa-3 message-box bg-transparent">
+                            @((MarkupString)Markdown.ToHtml(chat.Message))
+                        </MudPaper>
+                    </MudStack>
+                }
+                else
+                {
+                    switch (chat.ParsedMessage)
+                    {
+                        case ChartMessage chartMessage:
+                            <MudStack Class="pa-3" Row="true" Justify="Justify.FlexStart" width="70%">
+                                <MudPaper Class="pa-3 message-box bg-transparent">
+                                    <MudChart ChartType="ChartType.Pie" InputData="@chartMessage.Values" InputLabels="@chartMessage.Lables" Width="300px" Height="300px" />
+                                </MudPaper>
+                            </MudStack>
+                            break;
+                        default:
+                            break;
+                    }
+                }
+
+                
             }
         }
         
@@ -42,6 +66,7 @@
     public string Message { get; set; } = string.Empty;
     public Guid IdempotencyKey { get; set; } = Guid.NewGuid();
     public ChatHistoryDto ChatHistory { get; set; } = new ChatHistoryDto();
+
 
     protected async override Task OnInitializedAsync()
     {
@@ -94,7 +119,38 @@
         var response = await httpClient.GetFromJsonAsync<ChatHistoryDto>("/api/chat/history");
         if (response != null)
         {
-            ChatHistory = response;
+            var chats = new List<ChatDto>();
+            foreach (var chat in response.Chats)
+            {
+                chats.Add(chat);
+                if (chat.Role != "assistant")
+                {
+                    continue;
+                }
+
+                try
+                {
+                    JsonNode node = JsonNode.Parse(chat.Message)!;
+                    IParsedMessage? parsedMessage = null;
+                    foreach (var messageParser in messageParsers)
+                    {
+                        if (messageParser.CanParseMessage(node))
+                        {
+                            parsedMessage = messageParser.ParseMessage(node);
+                            break;
+                        }
+                    }
+                    chat.ParsedMessage = parsedMessage;
+                }
+                catch (Exception ex)
+                {
+                    //Console.WriteLine(ex.ToString());
+                }
+            }
+            ChatHistory = new ChatHistoryDto
+                {
+                    Chats = chats
+                };
             StateHasChanged();
             await ScrollToBottom();
         }

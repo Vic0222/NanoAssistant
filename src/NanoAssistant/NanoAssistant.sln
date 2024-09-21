@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NanoAssistant.BlazorWebApp"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NanoAssistant.BlazorWebApp.Client", "NanoAssistant.BlazorWebApp\NanoAssistant.BlazorWebApp.Client\NanoAssistant.BlazorWebApp.Client.csproj", "{7232A52C-97D0-4ABA-A092-A58572E7D0D4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NanoAssistant.Shared", "NanoAssistant.Shared\NanoAssistant.Shared.csproj", "{AE05822F-2DFF-4B0E-A7A1-E0032B3F32FD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NanoAssistant.Shared", "NanoAssistant.Shared\NanoAssistant.Shared.csproj", "{AE05822F-2DFF-4B0E-A7A1-E0032B3F32FD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -80,7 +80,7 @@ kernelBuilder.AddOpenAIChatCompletion(builder.Configuration["OpenAI:Model"], bui
 
 builder.Services.AddSingleton<PromptExecutionSettings>(new OpenAIPromptExecutionSettings()
 {
-    ToolCallBehavior = ToolCallBehavior.AutoInvokeKernelFunctions
+    ToolCallBehavior = ToolCallBehavior.AutoInvokeKernelFunctions,
 });
 
 builder.Services.AddHttpClient<INanoFinanceTrackerService, NanoFinanceTrackerService>(client => {
