@@ -177,7 +177,7 @@
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "Failed deserializing json");
+            logger.LogError(ex, "Failed deserializing json. {json}", json);
             return null;
         }
 
