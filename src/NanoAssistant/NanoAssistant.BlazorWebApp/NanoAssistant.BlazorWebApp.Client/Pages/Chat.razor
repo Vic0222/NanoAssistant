@@ -11,6 +11,7 @@
 @inherits OwningComponentBase;
 @inject IJSRuntime JS;
 @inject IEnumerable<IMessageParser> messageParsers;
+@inject ILogger<Chat> logger;
 
 <PageTitle>Chat</PageTitle>
 <div class="h-full w-full flex flex-col justify-end ">
@@ -130,17 +131,22 @@
 
                 try
                 {
-                    JsonNode node = JsonNode.Parse(chat.Message)!;
+
                     IParsedMessage? parsedMessage = null;
-                    foreach (var messageParser in messageParsers)
+                    var jsonNode = ExtractJsonNode(chat.Message);
+                    if (jsonNode != null)
                     {
-                        if (messageParser.CanParseMessage(node))
+                        foreach (var messageParser in messageParsers)
                         {
-                            parsedMessage = messageParser.ParseMessage(node);
-                            break;
+                            if (messageParser.CanParseMessage(jsonNode))
+                            {
+                                parsedMessage = messageParser.ParseMessage(jsonNode);
+                                break;
+                            }
                         }
+                        chat.ParsedMessage = parsedMessage;
                     }
-                    chat.ParsedMessage = parsedMessage;
+
                 }
                 catch (Exception ex)
                 {
@@ -161,4 +167,33 @@
         await JS.InvokeVoidAsync("scrollToBottom", "chatContainer");
     }
 
+    public JsonNode? ExtractJsonNode(string message)
+    {
+        string jsonStart = "{";
+        string jsonEnd = "}";
+
+        int from = message.IndexOf(jsonStart) ;
+        int to = message.LastIndexOf(jsonEnd);
+
+        if (from == -1 || to == -1)
+        {
+            return null;
+        }
+
+        int length = to - from + 1;
+
+
+        string json = message.Substring(from, length);
+
+        try
+        {
+            return JsonNode.Parse(json);
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Failed deserializing json");
+            return null;
+        }
+        
+    }
 }
