@@ -105,7 +105,8 @@
         var chat = await response.Content.ReadFromJsonAsync<ChatDto>();
         if (chat != null)
         {
-            ChatHistory.Chats.Add(chat);
+            ParseChat(chat);
+            ChatHistory.Chats.Add(ParseChat(chat));
             StateHasChanged();
             await ScrollToBottom();
         }
@@ -121,35 +122,14 @@
             var chats = new List<ChatDto>();
             foreach (var chat in response.Chats)
             {
-                chats.Add(chat);
+                
                 if (chat.Role != "assistant")
                 {
+                    chats.Add(chat);
                     continue;
                 }
 
-                try
-                {
-
-                    IParsedMessage? parsedMessage = null;
-                    var jsonNode = ExtractJsonNode(chat.Message);
-                    if (jsonNode != null)
-                    {
-                        foreach (var messageParser in messageParsers)
-                        {
-                            if (messageParser.CanParseMessage(jsonNode))
-                            {
-                                parsedMessage = messageParser.ParseMessage(jsonNode);
-                                break;
-                            }
-                        }
-                        chat.ParsedMessage = parsedMessage;
-                    }
-
-                }
-                catch (Exception ex)
-                {
-                    logger.LogWarning(ex, "Failed parsing message");
-                }
+                chats.Add(ParseChat(chat));
             }
             ChatHistory = new ChatHistoryDto
                 {
@@ -192,6 +172,34 @@
             logger.LogError(ex, "Failed deserializing json");
             return null;
         }
-        
+
+    }
+
+    public ChatDto ParseChat(ChatDto chat)
+    {
+        try
+        {
+
+            IParsedMessage? parsedMessage = null;
+            var jsonNode = ExtractJsonNode(chat.Message);
+            if (jsonNode != null)
+            {
+                foreach (var messageParser in messageParsers)
+                {
+                    if (messageParser.CanParseMessage(jsonNode))
+                    {
+                        parsedMessage = messageParser.ParseMessage(jsonNode);
+                        break;
+                    }
+                }
+                chat.ParsedMessage = parsedMessage;
+            }
+
+        }
+        catch (Exception ex)
+        {
+            logger.LogWarning(ex, "Failed parsing message");
+        }
+        return chat;
     }
 }
