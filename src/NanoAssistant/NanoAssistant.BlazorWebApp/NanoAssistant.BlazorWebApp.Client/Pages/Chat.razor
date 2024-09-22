@@ -28,15 +28,13 @@
             }
             else if (chat.Role == "assistant")
             {
-                if (chat.ParsedMessage == null)
-                {
-                    <MudStack Class="pa-3" Row="true" Justify="Justify.FlexStart" width="70%">
-                        <MudPaper Class="pa-3 message-box bg-transparent">
-                            @((MarkupString)Markdown.ToHtml(chat.Message))
-                        </MudPaper>
-                    </MudStack>
-                }
-                else
+                <MudStack Class="pa-3" Row="true" Justify="Justify.FlexStart" width="70%">
+                    <MudPaper Class="pa-3 message-box bg-transparent">
+                        @((MarkupString)Markdown.ToHtml(chat.Message))
+                    </MudPaper>
+                </MudStack>
+
+                if (chat.ParsedMessage != null)
                 {
                     switch (chat.ParsedMessage)
                     {
