@@ -38,6 +38,7 @@ namespace NanoAssistant.Core.Grains
             State.ChatHistory.AddSystemMessage("You are a personal assistant named Nano assistant.");
             State.ChatHistory.AddSystemMessage($"Today is {DateTimeOffset.Now.ToString("d")}.");
             State.ChatHistory.AddSystemMessage("When asking for balance return the financial summary in markdown table.");
+            State.ChatHistory.AddSystemMessage("When adding expense or income try to figure out the rest except for account and amount.");
             State.ChatHistory.AddSystemMessage("If asked for a chart return the data as json. With the following format {  \"type\": chart-type, \"data\": [{label: label, value: 1000.00}] }\r\n. ");
         }
 
