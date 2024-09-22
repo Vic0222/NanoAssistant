@@ -59,6 +59,7 @@
     <div class="bg-background  p-4 flex gap-2 w-full">
         <MudTextField T="string" Variant="Variant.Outlined" @bind-Text="Message" Placeholder="Message" AutoGrow MaxLines="5" OnKeyDown="OnKeyDown" DebounceInterval="500" />
         <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.ArrowUpward" DropShadow="false" @onclick="SendUserMessage" Disabled="string.IsNullOrWhiteSpace(Message)" />
+        <MudFab Color="Color.Error" StartIcon="@Icons.Material.Filled.ClearAll" DropShadow="false" @onclick="ClearChatHistory" Disabled="!string.IsNullOrWhiteSpace(Message)" />
     </div>
 </div>
 @code {
@@ -122,7 +123,7 @@
             var chats = new List<ChatDto>();
             foreach (var chat in response.Chats)
             {
-                
+
                 if (chat.Role != "assistant")
                 {
                     chats.Add(chat);
@@ -138,6 +139,13 @@
             StateHasChanged();
             await ScrollToBottom();
         }
+    }
+
+    public async Task ClearChatHistory()
+    {
+        var response = await httpClient.PostAsync("/api/chat/history/clear", null);
+        response.EnsureSuccessStatusCode();
+        await GetChatHistory();
     }
 
     private async Task ScrollToBottom()

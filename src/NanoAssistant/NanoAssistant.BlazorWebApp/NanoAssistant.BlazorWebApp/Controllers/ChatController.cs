@@ -53,5 +53,20 @@ namespace NanoAssistant.BlazorWebApp.Controllers
             var chatHistory = await assistant.GetChatHistoryAsync();
             return Ok(chatHistory);
         }
+
+        [HttpPost("history/clear")]
+        [Authorize]
+        public async Task<IActionResult> PostClearHistory([FromServices] IClusterClient clusterClient)
+        {
+            string? userId = GetUserId();
+            if (string.IsNullOrWhiteSpace(userId))
+            {
+                return Unauthorized();
+            }
+            var assistant = clusterClient.GetGrain<INanoAssistantGrain>(userId);
+
+            await assistant.ClearHistory();
+            return Ok();
+        }
     }
 }

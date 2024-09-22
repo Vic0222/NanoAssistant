@@ -86,6 +86,13 @@ namespace NanoAssistant.Core.Grains
                 }).ToList()
             };
         }
+
+        public async Task ClearHistory()
+        {
+            State.ChatHistory = new ChatHistory();
+            AddSystemMessages();
+            await WriteStateAsync();
+        }
     }
 
     public class NanoAssistantState
