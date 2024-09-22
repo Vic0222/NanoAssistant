@@ -30,33 +30,33 @@ namespace NanoAssistant.Core.SemanticPlugins
         }
 
         [KernelFunction("get_finance_summary")]
-        [Description("Get's the financial summary of the month for the date in cents.")]
-        [return:Description("Financial summary of the month in cents.")]
+        [Description("Get's the financial summary of the month for the date.")]
+        [return:Description("Financial summary of the month.")]
         public Task<FinanceMonthDto> GetFinancialSummary([Description("Required")] string account, DateTimeOffset balanceDate)
         {
             return _nanoFinanceTrackerService.GetFinanceMonthStatus(account, balanceDate, _accessToken);
         }
 
         [KernelFunction("get_finance_breakdown")]
-        [Description("Get's the financial breakdown of the month for the date in cents.")]
-        [return: Description("Financial breakdown of the month. In cents.")]
+        [Description("Get's the financial breakdown of the month for the date.")]
+        [return: Description("Financial breakdown of the month.")]
         public Task<List<FinancialTransactionDto>> GetBreakdown([Description("Required")] string account, DateTimeOffset date)
         {
             return _nanoFinanceTrackerService.GetBreakdown(account, date, _accessToken);
         }
 
         [KernelFunction("add_expense")]
-        [Description("Add the expense in cents.")]
-        [return: Description("Financial summary in cents.")]
-        public Task<FinanceMonthDto> AddExpense([Description("Required")] string account, DateTimeOffset transactionDate, [Description("The expense in cents.")] int expense, string category, string description)
+        [Description("Add the expense.")]
+        [return: Description("Financial summary.")]
+        public Task<FinanceMonthDto> AddExpense([Description("Required")] string account, DateTimeOffset transactionDate, [Description("The expense.")] int expense, string category, string description)
         {
             return _nanoFinanceTrackerService.AddExpense(account, transactionDate, expense, category, description, _accessToken); ;
         }
 
         [KernelFunction("add_income")]
-        [Description("Add the income in cents.")]
-        [return: Description("Financial summary in cents.")]
-        public Task<FinanceMonthDto> AddIncome([Description("Required")] string account, DateTimeOffset transactionDate, [Description("The income in cents.")] int income, string category, string description)
+        [Description("Add the income.")]
+        [return: Description("Financial summary.")]
+        public Task<FinanceMonthDto> AddIncome([Description("Required")] string account, DateTimeOffset transactionDate, [Description("The income.")] int income, string category, string description)
         {
             return _nanoFinanceTrackerService.AddIncome(account, transactionDate, income, category, description, _accessToken); ;
         }

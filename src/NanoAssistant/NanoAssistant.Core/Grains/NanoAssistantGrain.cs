@@ -37,10 +37,8 @@ namespace NanoAssistant.Core.Grains
         {
             State.ChatHistory.AddSystemMessage("You are a personal assistant named Nano assistant.");
             State.ChatHistory.AddSystemMessage($"Today is {DateTimeOffset.Now.ToString("d")}.");
-            State.ChatHistory.AddSystemMessage("Please display money in it's dollar value.");
-            State.ChatHistory.AddSystemMessage("When asking for balance return the financial summary in markdown.");
-            State.ChatHistory.AddSystemMessage("Don't format numbers when in json.");
-            State.ChatHistory.AddSystemMessage("If asked for a chart return the data as json. With the following format {  \"type\": chart-type, \"data\": [{label: label, value: 100}] }\r\n. ");
+            State.ChatHistory.AddSystemMessage("When asking for balance return the financial summary in markdown table.");
+            State.ChatHistory.AddSystemMessage("If asked for a chart return the data as json. With the following format {  \"type\": chart-type, \"data\": [{label: label, value: 1000.00}] }\r\n. ");
         }
 
         public async Task<ChatDto> AddUserMessage(UserMessageDto userMessage, string accessToken)
