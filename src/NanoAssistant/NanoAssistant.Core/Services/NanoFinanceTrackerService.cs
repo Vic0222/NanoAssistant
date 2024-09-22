@@ -13,8 +13,8 @@ namespace NanoAssistant.Core.Services
 {
     public interface INanoFinanceTrackerService
     {
-        Task<FinanceMonthDto> AddExpense(string account, DateTimeOffset transactionDate, int expense, string category, string description, string accessToken);
-        Task<FinanceMonthDto> AddIncome(string account, DateTimeOffset transactionDate, int income, string category, string description, string accessToken);
+        Task<FinanceMonthDto> AddExpense(string account, DateTimeOffset transactionDate, decimal expense, string category, string description, string accessToken);
+        Task<FinanceMonthDto> AddIncome(string account, DateTimeOffset transactionDate, decimal income, string category, string description, string accessToken);
         Task<List<FinancialTransactionDto>> GetBreakdown(string account, DateTimeOffset date, string accessToken);
         Task<FinanceMonthDto> GetFinanceMonthStatus(string account, DateTimeOffset dateTime, string accessToken);
     }
@@ -30,7 +30,7 @@ namespace NanoAssistant.Core.Services
             _logger = logger;
         }
 
-        public async Task<FinanceMonthDto> AddIncome(string account, DateTimeOffset transactionDate, int income, string category, string description, string accessToken)
+        public async Task<FinanceMonthDto> AddIncome(string account, DateTimeOffset transactionDate, decimal income, string category, string description, string accessToken)
         {
             try
             {
@@ -52,7 +52,7 @@ namespace NanoAssistant.Core.Services
             }
         }
 
-        public async Task<FinanceMonthDto> AddExpense(string account, DateTimeOffset transactionDate, int expense, string category, string description, string accessToken)
+        public async Task<FinanceMonthDto> AddExpense(string account, DateTimeOffset transactionDate, decimal expense, string category, string description, string accessToken)
         {
             try
             {

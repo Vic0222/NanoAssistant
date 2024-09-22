@@ -12,10 +12,10 @@ namespace NanoAssistant.Core.InternalDtos
 
         public int Year { get; set; }
 
-        public int Balance { get; set; }
+        public decimal Balance { get; set; }
 
-        public int TotalExpense { get; set; }
+        public decimal TotalExpense { get; set; }
 
-        public int TotalIncome { get; set; }
+        public decimal TotalIncome { get; set; }
     }
 }

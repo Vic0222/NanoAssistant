@@ -48,7 +48,7 @@ namespace NanoAssistant.Core.SemanticPlugins
         [KernelFunction("add_expense")]
         [Description("Add the expense.")]
         [return: Description("Financial summary.")]
-        public Task<FinanceMonthDto> AddExpense([Description("Required")] string account, DateTimeOffset transactionDate, [Description("The expense.")] int expense, string category, string description)
+        public Task<FinanceMonthDto> AddExpense([Description("Required")] string account, DateTimeOffset transactionDate, [Description("The expense.")] decimal expense, string category, string description)
         {
             return _nanoFinanceTrackerService.AddExpense(account, transactionDate, expense, category, description, _accessToken); ;
         }
@@ -56,7 +56,7 @@ namespace NanoAssistant.Core.SemanticPlugins
         [KernelFunction("add_income")]
         [Description("Add the income.")]
         [return: Description("Financial summary.")]
-        public Task<FinanceMonthDto> AddIncome([Description("Required")] string account, DateTimeOffset transactionDate, [Description("The income.")] int income, string category, string description)
+        public Task<FinanceMonthDto> AddIncome([Description("Required")] string account, DateTimeOffset transactionDate, [Description("The income.")] decimal income, string category, string description)
         {
             return _nanoFinanceTrackerService.AddIncome(account, transactionDate, income, category, description, _accessToken); ;
         }

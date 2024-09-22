@@ -8,7 +8,7 @@ namespace NanoAssistant.Core.InternalDtos
 {
     public class AddIncomeCommandDto
     {
-        public int Amount { get; set; }
+        public decimal Amount { get; set; }
 
         public string Description { get; set; } = string.Empty;
 
