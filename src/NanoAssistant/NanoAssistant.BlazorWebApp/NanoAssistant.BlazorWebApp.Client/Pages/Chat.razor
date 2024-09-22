@@ -148,7 +148,7 @@
                 }
                 catch (Exception ex)
                 {
-                    //Console.WriteLine(ex.ToString());
+                    logger.LogWarning(ex, "Failed parsing message");
                 }
             }
             ChatHistory = new ChatHistoryDto

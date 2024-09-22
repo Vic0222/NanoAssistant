@@ -18,6 +18,6 @@ namespace NanoAssistant.BlazorWebApp.Client.Models
     {
         public string Label { get; set; } = string.Empty;
 
-        public int Value { get; set; }
+        public double Value { get; set; }
     }
 }
