@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 using static System.Net.Mime.MediaTypeNames;
@@ -15,6 +16,7 @@ namespace NanoAssistant.Core.Services
     {
         Task<FinanceMonthDto> AddExpense(string account, DateTimeOffset transactionDate, decimal expense, string category, string description, string accessToken);
         Task<FinanceMonthDto> AddIncome(string account, DateTimeOffset transactionDate, decimal income, string category, string description, string accessToken);
+        Task<List<AccountDto>> GetAccounts(string accessToken);
         Task<List<FinancialTransactionDto>> GetBreakdown(string account, DateTimeOffset date, string accessToken);
         Task<FinanceMonthDto> GetFinanceMonthStatus(string account, DateTimeOffset dateTime, string accessToken);
     }
@@ -103,6 +105,22 @@ namespace NanoAssistant.Core.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error getting finance month , {DateTime}", date);
+                throw;
+            }
+        }
+
+        public async Task<List<AccountDto>> GetAccounts(string accessToken)
+        {
+            try
+            {
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+                var response = await _httpClient.GetAsync($"api/Accounts");
+                response.EnsureSuccessStatusCode();
+                return await response.Content.ReadFromJsonAsync<List<AccountDto>>() ?? new List<AccountDto>();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error getting accounts.");
                 throw;
             }
         }

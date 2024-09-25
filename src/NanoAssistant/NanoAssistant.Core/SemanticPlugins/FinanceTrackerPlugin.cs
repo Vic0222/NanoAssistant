@@ -60,6 +60,14 @@ namespace NanoAssistant.Core.SemanticPlugins
         {
             return _nanoFinanceTrackerService.AddIncome(account, transactionDate, income, category, description, _accessToken); ;
         }
+
+        [KernelFunction("get_accounts")]
+        [Description("Get current existing accounts.")]
+        [return: Description("A list of existing accounts.")]
+        public Task<List<AccountDto>> GetAccounts()
+        {
+            return _nanoFinanceTrackerService.GetAccounts(_accessToken); ;
+        }
     }
 
 }

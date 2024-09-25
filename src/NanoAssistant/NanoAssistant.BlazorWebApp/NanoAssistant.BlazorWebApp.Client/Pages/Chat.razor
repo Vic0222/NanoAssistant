@@ -22,7 +22,7 @@
             {
                 <MudStack Class="pa-3" Row="true" Justify="Justify.FlexEnd">
                     <MudPaper Class="pa-3 message-box bg-slate-100">
-                        @((MarkupString)Markdown.ToHtml(chat.Message))
+                        @((MarkupString)Markdown.ToHtml(chat.Message, MarkdownPipeline))
                     </MudPaper>
                 </MudStack>
             }
@@ -30,7 +30,7 @@
             {
                 <MudStack Class="pa-3" Row="true" Justify="Justify.FlexStart" width="70%">
                     <MudPaper Class="pa-3 message-box bg-transparent">
-                        @((MarkupString)Markdown.ToHtml(chat.Message))
+                        @((MarkupString)Markdown.ToHtml(chat.Message, MarkdownPipeline))
                     </MudPaper>
                 </MudStack>
 
@@ -49,8 +49,6 @@
                             break;
                     }
                 }
-
-                
             }
         }
         
@@ -66,6 +64,10 @@
     public string Message { get; set; } = string.Empty;
     public Guid IdempotencyKey { get; set; } = Guid.NewGuid();
     public ChatHistoryDto ChatHistory { get; set; } = new ChatHistoryDto();
+
+    private MarkdownPipeline MarkdownPipeline = new MarkdownPipelineBuilder()
+                        .UseSoftlineBreakAsHardlineBreak()
+                        .Build();
 
 
     protected async override Task OnInitializedAsync()
