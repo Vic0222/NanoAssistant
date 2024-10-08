@@ -68,6 +68,17 @@ namespace NanoAssistant.Core.SemanticPlugins
         {
             return _nanoFinanceTrackerService.GetAccounts(_accessToken); ;
         }
+
+        [KernelFunction("group_by_category")]
+        [Description("Groups a breakdown by category.")]
+        [return: Description("A list of value grouped by category and the sum of amount.")]
+        public List<ValueDto> GroupByCategory(List<FinancialTransactionDto> breakdowns)
+        {
+            return breakdowns
+                .GroupBy(x => x.Category?.ToLower())
+                .Select(x => new ValueDto(x.FirstOrDefault()?.Category ?? string.Empty, x.Sum(y => y.Amount)))
+                .ToList();
+        }
     }
 
 }
