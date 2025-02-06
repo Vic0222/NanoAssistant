@@ -31,7 +31,7 @@ OpenAIPromptExecutionSettings openAIPromptExecutionSettings = new()
 
 while (true)
 {
-    string input = Console.ReadLine();
+    string input = Console.ReadLine() ?? string.Empty;
     chatHistory.AddUserMessage(input);
     var result = await chat.GetChatMessageContentAsync(chatHistory, executionSettings: openAIPromptExecutionSettings, kernel: kernel);
     chatHistory.Add(result);
